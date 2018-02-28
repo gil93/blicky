@@ -1,0 +1,50 @@
+.blicky-wrapper {
+  overflow: hidden;
+  box-sizing: border-box; }
+  .blicky-wrapper:before, .blicky-wrapper:after {
+    box-sizing: border-box; }
+  .blicky-wrapper * {
+    box-sizing: inherit; }
+    .blicky-wrapper *:before, .blicky-wrapper *:after {
+      box-sizing: inherit; }
+  .blicky-wrapper.snapping .blicky {
+    transition: left 300ms ease-out; }
+
+.blicky-container {
+  position: relative;
+  width: 100%; }
+
+.blicky {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  -webkit-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  zoom: 1; }
+  .blicky * {
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+  .blicky:after {
+    content: '';
+    display: table;
+    clear: both; }
+
+.blicky-slide {
+  float: left; }
+  .blicky-slide img {
+    display: block;
+    max-width: 100%; }
+
+/*# sourceMappingURL=blicky.css.map*/
