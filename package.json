@@ -1,0 +1,19 @@
+{
+  "name": "blicky",
+  "version": "1.0.0",
+  "description": "Blicky",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gil93/blicky.git"
+  },
+  "author": "Gil",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gil93/blicky/issues"
+  },
+  "homepage": "https://github.com/gil93/blicky#readme"
+}
