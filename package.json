@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/gil93/blicky/issues"
   },
-  "homepage": "https://github.com/gil93/blicky#readme"
+  "homepage": "https://github.com/gil93/blicky#readme",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.40",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.40",
+    "@babel/preset-env": "^7.0.0-beta.40",
+    "@babel/register": "^7.0.0-beta.40"
+  }
 }
