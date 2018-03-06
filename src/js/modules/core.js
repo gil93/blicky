@@ -1,3 +1,5 @@
+import { build } from './../functions/build';
+
 export default class Core {
 
 	constructor( blicky ) {
@@ -121,11 +123,7 @@ export default class Core {
 
 		};
 
-		blicky.slider.container.style.height = `${blicky.slider.height}px`;
-
-		blicky.slider.blicky.style.width = `${blicky.slider.width * blicky.slider.slideCount}px`;
-
-		blicky.slider.slides.forEach( slide => slide.style.width = `${blicky.slider.width}px` );
+		build.call( blicky );
 
 	}
 

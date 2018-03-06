@@ -2,6 +2,7 @@ import './../scss/main.scss';
 
 import Core from './modules/core';
 import Drag from './modules/drag';
+import Events from './modules/events';
 
 export class Blicky {
 
@@ -18,6 +19,8 @@ export class Blicky {
 		new Core( this );
 
 		new Drag( this );
+
+		new Events( this );
 
 	}
 

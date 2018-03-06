@@ -1,14 +1,18 @@
-export function move( cX ) {
+export function move( cX, resizing ) {
 
 	let slider = this.slider;
 
-	if ( slider.oldcX == undefined ) return;
+	if ( ! resizing ) {
 
-	if ( Math.abs( cX ) - Math.abs( slider.oldcX ) == 0 ) return;
+		if ( slider.oldcX == undefined ) return;
 
-	slider.directionalHistory.push( ( cX - slider.oldcX ) > 0 ? 'right' : 'left' );
+		if ( Math.abs( cX ) - Math.abs( slider.oldcX ) == 0 ) return;
 
-	slider.posX += ( ( cX - slider.oldcX ) );
+		slider.directionalHistory.push( ( cX - slider.oldcX ) > 0 ? 'right' : 'left' );
+
+		slider.posX += ( ( cX - slider.oldcX ) );
+
+	}
 
 	slider.blicky.style.left = `${slider.posX}px`;
 
