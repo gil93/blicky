@@ -1,7 +1,7 @@
 import './../scss/main.scss';
 
-import * as core from './modules/core';
-import * as animate from './modules/animate';
+import Core from './modules/core';
+import Drag from './modules/drag';
 
 export class Blicky {
 
@@ -20,11 +20,9 @@ export class Blicky {
 
 		}
 
-		core.setDomProps.call( this );
+		new Core( this );
 
-		core.build.call( this );
-
-		animate.animate.call( this );
+		new Drag( this );
 
 	}
 

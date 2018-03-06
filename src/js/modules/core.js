@@ -1,102 +1,132 @@
-export function setDomProps() {
+export default class Core {
 
-	let slides = Array.from( this.element.children );
+	constructor( blicky ) {
 
-	this.originalElement = {
+		this.blicky = blicky;
 
-		element: this.element,
-		width: this.element.clientWidth,
-		slides: slides,
-		slideCount: slides.length
+		this.setDomProps();
 
-	};
-
-	this.slider = {
-
-		width: this.originalElement.width,
-		slideCount: slides.length
+		this.build();
 
 	}
 
-}
+	setDomProps() {
 
-export function build() {
+		let blicky = this.blicky;
 
-	let markup = createContainer.call( this );
+		let slides = Array.from( blicky.element.children );
 
-	let newSlider = new DOMParser().parseFromString( markup, 'text/html' ).body.firstChild;
+		blicky.slides = slides;
 
-	publish.call( this, newSlider );
+		blicky.originalElement = {
 
-	let newSliderProps = {
+			element: blicky.element,
+			width: blicky.element.clientWidth,
+			slides: slides,
+			slideCount: slides.length
 
-		element: this.element,
-		height: this.element.getElementsByClassName( 'blicky-slide' )[0].clientHeight,
-		container: this.element.children[0],
-		blicky: this.element.children[0].children[0],
-		slides: Array.from( this.element.getElementsByClassName( 'blicky-slide' ) ),
-		currentSlide: 0,
-		directionalHistory: []
+		};
 
-	};
+		blicky.slider = {
 
-	this.slider = {
+			width: blicky.originalElement.width,
+			slideCount: slides.length
 
-		...this.slider,
-		...newSliderProps
+		}
 
-	};
+	}
 
-}
+	createSlides() {
 
-function createSlides() {
+		return this.blicky.originalElement.slides
 
-	return this.originalElement.slides
+			.map( slide => `
 
-		.map( slide => `
+				<div class="blicky-slide">
 
-			<div class="blicky-slide">
+					${ slide.outerHTML }
 
-				${ slide.outerHTML }
+				</div>
 
-			</div>
+			`)
 
-		`)
+			.join( ' ' )
 
-		.join( ' ' )
+		;
 
-	;
+	}
 
-}
+	createContainer() {
 
-function createContainer() {
+		let self = this;
 
-	return `
+		return `
 
-		<div class="blicky-wrapper">
+			<div class="blicky-wrapper">
 
-			<div class="blicky-container">
+				<div class="blicky-container">
 
-				<div class="blicky">
+					<div class="blicky">
 
-					${ createSlides.call( this ) }
+						${ self.createSlides() }
+
+					</div>
 
 				</div>
 
 			</div>
 
-		</div>
+		`;
 
-	`;
+	}
 
-}
+	publish( newSlider ) {
 
-function publish( newSlider ) {
+		let blicky = this.blicky;
 
-	document.body.insertBefore( newSlider, this.element );
+		document.body.insertBefore( newSlider, blicky.element );
 
-	document.body.removeChild( this.element );
+		document.body.removeChild( blicky.element );
 
-	this.element = newSlider;
+		blicky.element = newSlider;
+
+	}
+
+	build() {
+
+		let blicky = this.blicky;
+
+		let markup = this.createContainer();
+
+		let newSlider = new DOMParser().parseFromString( markup, 'text/html' ).body.firstChild;
+
+		this.publish( newSlider );
+
+		let newSliderProps = {
+
+			element: blicky.element,
+			height: blicky.element.getElementsByClassName( 'blicky-slide' )[0].clientHeight,
+			container: blicky.element.children[0],
+			blicky: blicky.element.children[0].children[0],
+			slides: Array.from( blicky.element.getElementsByClassName( 'blicky-slide' ) ),
+			currentSlide: 0,
+			directionalHistory: []
+
+		};
+
+		blicky.slider = {
+
+			...blicky.slider,
+			...newSliderProps
+
+		};
+
+		blicky.slider.container.style.height = `${blicky.slider.height}px`;
+
+		blicky.slider.blicky.style.width = `${blicky.slider.width * blicky.slider.slideCount}px`;
+
+		blicky.slider.slides.forEach( slide => slide.style.width = `${blicky.slider.width}px` );
+
+	}
 
 }
