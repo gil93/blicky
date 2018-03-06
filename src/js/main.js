@@ -13,12 +13,7 @@ export class Blicky {
 
 		this.defaults = {};
 
-		this.options = {
-
-			...this.defaults,
-			...options
-
-		}
+		this.options = { ...this.defaults, ...options };
 
 		new Core( this );
 
