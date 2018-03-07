@@ -1,4 +1,5 @@
 import { build } from './../functions/build';
+import { infinite } from './../functions/infinite';
 
 export default class Core {
 
@@ -8,8 +9,24 @@ export default class Core {
 
 		this.setDomProps();
 
+		this.preBuildOptions();
+
 		this.build();
 
+		this.postBuildOptions();
+
+	}
+
+	preBuildOptions() {
+
+	}
+
+	postBuildOptions() {
+
+		let options = this.blicky.options;
+
+		if ( options.infinite === true ) infinite.call( this.blicky );
+		
 	}
 
 	setDomProps() {
@@ -34,7 +51,7 @@ export default class Core {
 			width: blicky.originalElement.width,
 			slideCount: slides.length
 
-		}
+		};
 
 	}
 
