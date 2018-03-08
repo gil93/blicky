@@ -19,7 +19,7 @@ function right() {
 }
 
 function left() {
-	
+
 	let slider = this.slider;
 
 	if ( slider.currentSlide == slider.slideCount - 1 ) {
