@@ -26,7 +26,7 @@ export default class Core {
 		let options = this.blicky.options;
 
 		if ( options.infinite === true ) infinite.call( this.blicky );
-		
+
 	}
 
 	setDomProps() {
