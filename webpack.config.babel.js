@@ -41,9 +41,9 @@ const config = {
 
 							['@babel/preset-env', {
 
-								'targets': {
+								targets: {
 
-									'browsers': [
+									browsers: [
 
 										'last 5 versions',
 										'safari >= 8',
@@ -58,7 +58,8 @@ const config = {
 						],
 						plugins: [
 
-							'@babel/plugin-syntax-object-rest-spread'
+							'@babel/plugin-syntax-object-rest-spread',
+							'@babel/plugin-transform-runtime'
 
 						]
 

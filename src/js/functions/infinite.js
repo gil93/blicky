@@ -1,35 +1,41 @@
+const infiniteSlide = slide => {
+
+	let clone = slide.cloneNode( true );
+
+	clone.classList.add( 'blicky-cloned' );
+
+	clone.style.cssText = 'display: none';
+
+	return clone;
+
+}
+
 export function infinite() {
 
-	// let slider = this.slider;
+	let slider = this.slider;
 
-	// let slides = this.slider.slides;
+	let slides = this.slider.slides;
 
-	// let half = Math.ceil( this.slider.slideCount / 2 );
+	let half = Math.ceil( this.slider.slideCount / 2 );
 
-	// let left = new DOMParser().parseFromString( slides
+	slides
 
-	// 	.slice( 0, half )
+		.slice( 0, half )
 
-	// 	.map( ( slide ) => slide.outerHTML )
+		.reverse()
 
-	// 	.toString(), 'text/html' ).body.firstChild
+		.forEach( slide => slider.blicky.insertBefore( infiniteSlide( slide ), slider.blicky.children[0] ) )
 
-	// ;
+	;
 
-	// let right = new DOMParser().parseFromString( slides
+	slides
 
-	// 	.slice( half - 1, slider.slideCount )
+		.slice( half - 1, slider.slideCount )
 
-	// 	.map( ( slide ) => slide.outerHTML )
+		.reverse()
 
-	// 	.toString(), 'text/html' ).body.firstChild
+		.forEach( slide => slider.blicky.appendChild( infiniteSlide( slide ) ) )
 
-	// ;
-
-	// slider.blicky.insertBefore( left, slider.blicky.children[0] );
-
-	// slider.blicky.appendChild( right );
-
-	debugger;
+	;
 
 }

@@ -1,19 +1,26 @@
+import Imagesloaded from 'imagesloaded';
+
 import { build } from './../functions/build';
+import { publish } from './../functions/publish';
 import { infinite } from './../functions/infinite';
 
 export default class Core {
 
 	constructor( blicky ) {
 
+		( async () => {
+
+			await this.setDomProps();
+
+			this.preBuildOptions();
+
+			this.build();
+
+			this.postBuildOptions();
+
+		});
+
 		this.blicky = blicky;
-
-		this.setDomProps();
-
-		this.preBuildOptions();
-
-		this.build();
-
-		this.postBuildOptions();
 
 	}
 
@@ -40,7 +47,6 @@ export default class Core {
 		blicky.originalElement = {
 
 			element: blicky.element,
-			width: blicky.element.clientWidth,
 			slides: slides,
 			slideCount: slides.length
 
@@ -48,10 +54,27 @@ export default class Core {
 
 		blicky.slider = {
 
-			width: blicky.originalElement.width,
 			slideCount: slides.length
 
 		};
+
+		Imagesloaded( blicky.element, () => {
+
+			blicky.originalElement = {
+
+				...blicky.originalElement,
+				width: blicky.element.clientWidth,
+
+			};
+
+			blicky = {
+
+				...blicky,
+				width: blicky.element.clientWidth,
+
+			};
+
+		});
 
 	}
 
@@ -99,18 +122,6 @@ export default class Core {
 
 	}
 
-	publish( newSlider ) {
-
-		let blicky = this.blicky;
-
-		document.body.insertBefore( newSlider, blicky.element );
-
-		document.body.removeChild( blicky.element );
-
-		blicky.element = newSlider;
-
-	}
-
 	build() {
 
 		let blicky = this.blicky;
@@ -119,7 +130,7 @@ export default class Core {
 
 		let newSlider = new DOMParser().parseFromString( markup, 'text/html' ).body.firstChild;
 
-		this.publish( newSlider );
+		publish.call( this, newSlider );
 
 		let newSliderProps = {
 
