@@ -1,4 +1,5 @@
 import { transition } from './transition';
+import { getDirection } from './get-direction';
 
 function right() {
 
@@ -6,7 +7,7 @@ function right() {
 
 	if ( slider.currentSlide == 0 ) {
 
-		slider.posX = slider.currentSlide * slider.width;
+		slider.posX = 0;
 
 	} else {
 
@@ -36,27 +37,35 @@ function left() {
 
 }
 
+function slide() {
+
+	let slider = this.slider;
+
+	slider.directionalHistory.length = 0;
+
+	slider.blicky.style.left = `${slider.posX}px`;
+
+}
+
 export function snap() {
 
 	let slider = this.slider;
 
 	let percentChange = Math.round( ( ( Math.abs( slider.posX ) - ( slider.currentSlide * slider.width ) ) / slider.width ) * 100 );
 
+	let direction = getDirection.call( this );
+
 	slider.oldcX = undefined;
 
 	transition.call( this );
 
-	let lefts = slider.directionalHistory.filter( direction => direction == 'left' ).length;
-
-	let rights = slider.directionalHistory.filter( direction => direction == 'right' ).length;
-
 	if ( Math.abs( percentChange ) > 20 ) {
 
-		if ( rights > lefts ) {
+		if ( direction == 'right' ) {
 
 			right.call( this );
 
-		} else if ( lefts > rights ) {
+		} else if ( direction == 'left' ) {
 
 			left.call( this );
 
@@ -72,8 +81,6 @@ export function snap() {
 
 	}
 
-	slider.directionalHistory.length = 0;
-
-	slider.blicky.style.left = `${slider.posX}px`;
+	slide.call( this );
 
 }
