@@ -8,23 +8,29 @@ export default class Core {
 
 	constructor( blicky ) {
 
-		( async () => {
+		this.blicky = blicky;
 
-			await this.setDomProps();
+		return ( async () => {
 
 			this.preBuildOptions();
 
-			this.build();
+			await this.setDomProps();
+
+			this.buildSlider();
 
 			this.postBuildOptions();
 
-		});
+			build.call( this.blicky );
 
-		this.blicky = blicky;
+			return this.blicky;
+
+		})();
 
 	}
 
 	preBuildOptions() {
+
+		let options = this.blicky.options;
 
 	}
 
@@ -36,43 +42,40 @@ export default class Core {
 
 	}
 
-	setDomProps() {
+	async setDomProps() {
 
-		let blicky = this.blicky;
+		let slides = Array.from( this.blicky.element.children );
 
-		let slides = Array.from( blicky.element.children );
+		this.blicky = {
 
-		blicky.slides = slides;
-
-		blicky.originalElement = {
-
-			element: blicky.element,
+			...this.blicky,
 			slides: slides,
-			slideCount: slides.length
+			slider: {
+
+				slideCount: slides.length
+
+			}
 
 		};
 
-		blicky.slider = {
+		await new Promise( ( resolve, reject ) => {
 
-			slideCount: slides.length
+			new Imagesloaded( this.blicky.element, result => {
 
-		};
+				this.blicky = {
 
-		Imagesloaded( blicky.element, () => {
+					...this.blicky,
+					slider: {
 
-			blicky.originalElement = {
+						...this.blicky.slider,
+						width: this.blicky.element.clientWidth
 
-				...blicky.originalElement,
-				width: blicky.element.clientWidth,
+					}
+				}
 
-			};
+				resolve( result );
 
-			blicky = {
-
-				...blicky,
-				width: blicky.element.clientWidth,
-
-			};
+			});
 
 		});
 
@@ -80,7 +83,7 @@ export default class Core {
 
 	createSlides() {
 
-		return this.blicky.originalElement.slides
+		return this.blicky.slides
 
 			.map( slide => `
 
@@ -100,8 +103,6 @@ export default class Core {
 
 	createContainer() {
 
-		let self = this;
-
 		return `
 
 			<div class="blicky-wrapper">
@@ -110,7 +111,7 @@ export default class Core {
 
 					<div class="blicky">
 
-						${ self.createSlides() }
+						${ this.createSlides() }
 
 					</div>
 
@@ -122,9 +123,7 @@ export default class Core {
 
 	}
 
-	build() {
-
-		let blicky = this.blicky;
+	buildSlider() {
 
 		let markup = this.createContainer();
 
@@ -132,26 +131,38 @@ export default class Core {
 
 		publish.call( this, newSlider );
 
+		let slides = Array
+
+			.from( this.blicky.element.getElementsByClassName( 'blicky-slide' ) )
+
+			.map( ( slide, index ) => {
+
+				slide.dataset.blickyIndex = index;
+
+				return slide;
+
+			})
+
+		;
+
 		let newSliderProps = {
 
-			element: blicky.element,
-			height: blicky.element.getElementsByClassName( 'blicky-slide' )[0].clientHeight,
-			container: blicky.element.children[0],
-			blicky: blicky.element.children[0].children[0],
-			slides: Array.from( blicky.element.getElementsByClassName( 'blicky-slide' ) ),
+			element: this.blicky.element,
+			height: this.blicky.element.getElementsByClassName( 'blicky-slide' )[0].clientHeight,
+			container: this.blicky.element.children[0],
+			blicky: this.blicky.element.children[0].children[0],
+			slides: slides,
 			currentSlide: 0,
 			directionalHistory: []
 
 		};
 
-		blicky.slider = {
+		this.blicky.slider = {
 
-			...blicky.slider,
+			...this.blicky.slider,
 			...newSliderProps
 
 		};
-
-		build.call( blicky );
 
 	}
 
