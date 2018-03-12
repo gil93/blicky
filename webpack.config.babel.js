@@ -58,8 +58,8 @@ const config = {
 						],
 						plugins: [
 
-							'@babel/plugin-syntax-object-rest-spread',
-							'@babel/plugin-transform-runtime'
+							'@babel/plugin-transform-runtime',
+							'@babel/plugin-syntax-object-rest-spread'
 
 						]
 
