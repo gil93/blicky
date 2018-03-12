@@ -2,6 +2,8 @@ export function move( cX, resizing ) {
 
 	let slider = this.slider;
 
+	if ( slider.element.classList.contains( 'snapping' ) ) return;
+
 	if ( ! resizing ) {
 
 		if ( slider.oldcX == undefined ) return;
@@ -10,7 +12,7 @@ export function move( cX, resizing ) {
 
 		slider.directionalHistory.push( ( cX - slider.oldcX ) > 0 ? 'right' : 'left' );
 
-		slider.posX += ( ( cX - slider.oldcX ) );
+		slider.posX += ( cX - slider.oldcX );
 
 	}
 
