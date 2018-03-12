@@ -1,4 +1,28 @@
+function infiniteReset() {
+
+	let slider = this.slider;
+
+	let currentSlide = this.slider.currentSlide;
+
+	if ( currentSlide == 0 && this.slider.posX == 0 ) {
+
+		let clonesLength = this.slider.blicky.getElementsByClassName( 'blicky-cloned' ).length;
+
+		let lastSlide = this.slider.slideCount - 1 + ( clonesLength / 2 );
+
+		this.slider.currentSlide = lastSlide;
+
+		this.slider.posX = lastSlide * this.slider.width * -1;
+
+		this.slider.blicky.style.left = `${this.slider.posX}px`;
+
+	}
+
+}
+
 export function transition() {
+
+	let self = this;
 
 	let slider = this.slider;
 
@@ -29,6 +53,8 @@ export function transition() {
 		slider.element.removeEventListener( 'webkitTransitionend', transitionend, false );
 
 		slider.element.removeEventListener( 'otransitionend', transitionend, false );
+
+		if ( self.options.infinite ) infiniteReset.call( self );
 
 	}
 
