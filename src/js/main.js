@@ -8,19 +8,36 @@ export class Blicky {
 
 	constructor( element, options ) {
 
+		let self = this;
+
 		if ( ! element.length ) throw Error( 'Need to provide element' );
 
 		this.element = typeof element == 'object' ? element[0] : document.querySelectorAll( element )[0];
 
-		this.defaults = {};
+		this.defaults = {
+
+			infinite: false
+
+		};
 
 		this.options = { ...this.defaults, ...options };
 
-		new Core( this );
+		( async () => {
 
-		new Drag( this );
+			let core = await new Core( this );
 
-		new Events( this );
+			let self = {
+
+				...self,
+				...core
+
+			};
+
+			new Drag( self );
+
+			new Events( self );
+
+		})();
 
 	}
 
