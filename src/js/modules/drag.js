@@ -7,13 +7,17 @@ export default class Drag {
 
 		this.blicky = blicky;
 
-		this.blicky.slider.posX = 0;
+		let slider = this.blicky.slider;
+
+		slider.posX = 0;
+
+		slider.posX = window.parseInt( slider.blicky.getElementsByClassName( 'blicky-slide' )[0].dataset.blickyIndex, 10 ) * slider.width;
 
 		this.events();
 
 	}
 
-	events( ) {
+	events() {
 
 		let blicky = this.blicky;
 
@@ -33,7 +37,7 @@ export default class Drag {
 
 			let cX = e.clientX;
 
-			move.call( self.blicky, cX );
+			move.call( blicky, cX );
 
 			blicky.slider.oldcX = cX;
 
