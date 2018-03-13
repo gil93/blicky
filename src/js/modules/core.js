@@ -1,8 +1,7 @@
-import Imagesloaded from 'imagesloaded';
+import { infinite } from './../options/infinite';
+import { set } from './../functions/set';
 
-import { build } from './../functions/build';
-import { publish } from './../functions/publish';
-import { infinite } from './../functions/infinite';
+import Imagesloaded from 'imagesloaded';
 
 export default class Core {
 
@@ -12,15 +11,15 @@ export default class Core {
 
 		return ( async () => {
 
-			this.preBuildOptions();
+			await this.props();
 
-			await this.setDomProps();
+			this.preBuild();
 
-			this.buildSlider();
+			this.build();
 
-			this.postBuildOptions();
+			this.postBuild();
 
-			build.call( this.blicky );
+			set( this.blicky );
 
 			return this.blicky;
 
@@ -28,23 +27,11 @@ export default class Core {
 
 	}
 
-	preBuildOptions() {
+	async props() {
 
 		let options = this.blicky.options;
 
-	}
-
-	postBuildOptions() {
-
-		let options = this.blicky.options;
-
-		if ( options.infinite === true ) infinite.call( this.blicky );
-
-	}
-
-	async setDomProps() {
-
-		let slides = Array.from( this.blicky.element.children );
+		let slides = Array.from( this.blicky.wrapper.children );
 
 		this.blicky = {
 
@@ -60,7 +47,7 @@ export default class Core {
 
 		await new Promise( ( resolve, reject ) => {
 
-			new Imagesloaded( this.blicky.element, result => {
+			new Imagesloaded( this.blicky.wrapper, result => {
 
 				this.blicky = {
 
@@ -68,7 +55,7 @@ export default class Core {
 					slider: {
 
 						...this.blicky.slider,
-						width: this.blicky.element.clientWidth
+						width: this.blicky.wrapper.clientWidth
 
 					}
 				}
@@ -81,7 +68,23 @@ export default class Core {
 
 	}
 
-	createSlides() {
+	preBuild() {
+
+	}
+
+	publish( newSlider ) {
+
+		let blicky = this.blicky;
+
+		document.body.insertBefore( newSlider, blicky.wrapper );
+
+		document.body.removeChild( blicky.wrapper );
+
+		blicky.wrapper = newSlider;
+
+	}
+
+	slides() {
 
 		return this.blicky.slides
 
@@ -93,7 +96,7 @@ export default class Core {
 
 				</div>
 
-			`)
+			` )
 
 			.join( ' ' )
 
@@ -101,7 +104,7 @@ export default class Core {
 
 	}
 
-	createContainer() {
+	wrapper() {
 
 		return `
 
@@ -111,7 +114,7 @@ export default class Core {
 
 					<div class="blicky">
 
-						${ this.createSlides() }
+						${ this.slides() }
 
 					</div>
 
@@ -123,17 +126,13 @@ export default class Core {
 
 	}
 
-	buildSlider() {
+	build() {
 
-		let markup = this.createContainer();
-
-		let newSlider = new DOMParser().parseFromString( markup, 'text/html' ).body.firstChild;
-
-		publish.call( this, newSlider );
+		this.publish( new DOMParser().parseFromString( this.wrapper(), 'text/html' ).body.firstChild );
 
 		let slides = Array
 
-			.from( this.blicky.element.getElementsByClassName( 'blicky-slide' ) )
+			.from( this.blicky.wrapper.getElementsByClassName( 'blicky-slide' ) )
 
 			.map( ( slide, index ) => {
 
@@ -147,13 +146,14 @@ export default class Core {
 
 		let newSliderProps = {
 
-			element: this.blicky.element,
-			height: this.blicky.element.getElementsByClassName( 'blicky-slide' )[0].clientHeight,
-			container: this.blicky.element.children[0],
-			blicky: this.blicky.element.children[0].children[0],
+			wrapper: this.blicky.wrapper,
+			height: this.blicky.wrapper.getElementsByClassName( 'blicky-slide' )[0].clientHeight,
+			container: this.blicky.wrapper.children[0],
+			blicky: this.blicky.wrapper.children[0].children[0],
 			slides: slides,
 			currentSlide: 0,
-			directionalHistory: []
+			directionalHistory: [],
+			snapping: false
 
 		};
 
@@ -163,6 +163,12 @@ export default class Core {
 			...newSliderProps
 
 		};
+
+	}
+
+	postBuild() {
+
+		if ( this.blicky.options.infinite == true ) infinite( this.blicky );
 
 	}
 

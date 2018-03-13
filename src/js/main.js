@@ -1,8 +1,8 @@
 import './../scss/main.scss';
 
 import Core from './modules/core';
-import Drag from './modules/drag';
 import Events from './modules/events';
+// import Drag from './modules/drag';
 
 export class Blicky {
 
@@ -12,13 +12,9 @@ export class Blicky {
 
 		if ( ! element.length ) throw Error( 'Need to provide element' );
 
-		this.element = typeof element == 'object' ? element[0] : document.querySelectorAll( element )[0];
+		this.wrapper = typeof element == 'object' ? element[0] : document.querySelectorAll( element )[0];
 
-		this.defaults = {
-
-			infinite: false
-
-		};
+		this.defaults = { infinite: false };
 
 		this.options = { ...this.defaults, ...options };
 
@@ -26,16 +22,9 @@ export class Blicky {
 
 			let core = await new Core( this );
 
-			let self = {
+			let self = { ...self, ...core };
 
-				...self,
-				...core
-
-			};
-
-			new Drag( self );
-
-			new Events( self );
+			new Events( self );	
 
 		})();
 

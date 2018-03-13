@@ -1,9 +1,9 @@
-import { transition } from './transition';
-import { getDirection } from './get-direction';
+import { transition } from './../util/transition';
+import { direction } from './../util/direction';
 
-function right() {
+function right( blicky ) {
 
-	let slider = this.slider;
+	let slider = blicky.slider;
 
 	if ( slider.currentSlide == 0 ) {
 
@@ -19,9 +19,9 @@ function right() {
 
 }
 
-function left() {
+function left( blicky ) {
 
-	let slider = this.slider;
+	let slider = blicky.slider;
 
 	if ( slider.currentSlide == slider.slideCount - 1 ) {
 
@@ -37,50 +37,52 @@ function left() {
 
 }
 
-function slide() {
+function slide( blicky ) {
 
-	let slider = this.slider;
+	let slider = blicky.slider;
+
+	let $blicky = slider.blicky;
 
 	slider.directionalHistory.length = 0;
 
-	slider.blicky.style.left = `${slider.posX}px`;
+	$blicky.style.left = `${slider.posX}px`;
 
 }
 
-export function snap() {
+export function snap( blicky ) {
 
-	let slider = this.slider;
+	let slider = blicky.slider;
 
-	let percentChange = Math.round( ( ( Math.abs( slider.posX ) - ( slider.currentSlide * slider.width ) ) / slider.width ) * 100 );
+	let percentChange = ( ( Math.abs( slider.posX ) - slider.slides[slider.currentSlide].offsetLeft ) / slider.width ) * 100;
 
-	let direction = getDirection.call( this );
+	let dir = direction( blicky );
 
 	slider.oldcX = undefined;
 
-	transition.call( this );
+	transition( blicky );
 
 	if ( Math.abs( percentChange ) > 20 ) {
 
-		if ( direction == 'right' ) {
+		if ( dir == 'right' ) {
 
-			right.call( this );
+			right( blicky );
 
-		} else if ( direction == 'left' ) {
+		} else if ( dir == 'left' ) {
 
-			left.call( this );
+			left( blicky );
 
 		} else {
 
-			slider.posX = slider.currentSlide * slider.width;
+			slider.posX = slider.slides[slider.currentSlide].offsetLeft * -1;
 
 		}
 
 	} else {
 
-		slider.posX = slider.currentSlide * ( slider.width * -1 );
+		slider.posX = slider.slides[slider.currentSlide].offsetLeft * -1;
 
 	}
 
-	slide.call( this );
+	slide( blicky );
 
 }
