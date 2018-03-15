@@ -1,10 +1,13 @@
 import { isInfinite } from './../options/infinite';
+import { direction } from './direction';
 
 export function transition( blicky ) {
 
 	let slider = blicky.slider;
 
 	let $blicky = slider.blicky;
+
+	let dir = direction( blicky );
 
 	slider.snapping = true;
 
@@ -14,41 +17,59 @@ export function transition( blicky ) {
 
 	window.setTimeout( () => {
 
-		// have to return promise and continue this operation from within snap.js
+		if ( isInfinite ) {
 
-		// if ( isInfinite ) {
+			if ( slider.currentSlide == 0 && dir == 'right' ) {
 
-		// 	if ( slider.currentSlide == 0 ) {
+				let realCurrentSlide = Array.from( $blicky
 
-		// 		let realCurrentSlide = Array.from( $blicky
+					.getElementsByClassName( 'blicky-slide' ) )
 
-		// 			.getElementsByClassName( 'blicky-slide' ) )
+					.filter( slide => slider.posX == slide.offsetLeft )
 
-		// 			.filter( slide => slider.posX == slide.offsetLeft )
+				;
 
-		// 		;
+				if ( realCurrentSlide.length ) {
 
-		// 		if ( realCurrentSlide.length ) {
+					slider.snapping = false;
 
-		// 			slider.snapping = false;
+					slider.wrapper.classList.remove( 'snapping' );
 
-		// 			slider.wrapper.classList.remove( 'snapping' );
+					slider.currentSlide = slider.slides.length - 1;
 
-		// 			slider.currentSlide = slider.slides.length - 1;
+					slider.posX = Math.abs( slider.slides[slider.currentSlide].offsetLeft ) * -1;
 
-		// 			slider.posX = Math.abs( slider.slides[slider.currentSlide].offsetLeft ) * -1;
+					$blicky.style.left = `${slider.posX}px`;
 
-		// 			$blicky.style.left = `${slider.posX}px`;
+				}
 
-		// 			console.log( slider.currentSlide );
+			} else if ( slider.currentSlide == slider.slideCount && dir == 'left' ) {
 
-		// 			console.log( slider.posX );
+				let realCurrentSlide = Array.from( $blicky
 
-		// 		}
+					.getElementsByClassName( 'blicky-slide' ) )
 
-		// 	}
+					.filter( slide => Math.abs( slider.posX ) == Math.abs( slide.offsetLeft ) )
 
-		// }
+				;
+
+				if ( realCurrentSlide.length ) {
+
+					slider.snapping = false;
+
+					slider.wrapper.classList.remove( 'snapping' );
+
+					slider.currentSlide = 0;
+
+					slider.posX = Math.abs( slider.slides[slider.currentSlide].offsetLeft ) * -1;
+
+					$blicky.style.left = `${slider.posX}px`;
+
+				}
+
+			}
+
+		}
 
 		slider.snapping = false;
 

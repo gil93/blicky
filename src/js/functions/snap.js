@@ -1,5 +1,6 @@
 import { transition } from './../util/transition';
 import { direction } from './../util/direction';
+import { isInfinite } from './../options/infinite';
 
 function right( blicky ) {
 
@@ -9,11 +10,21 @@ function right( blicky ) {
 
 		slider.posX = 0;
 
+		debugger;
+
 	} else {
 
-		slider.posX = ( slider.currentSlide - 1 ) * ( slider.width * -1 );
+		if ( isInfinite ) {
 
-		slider.currentSlide -= 1;
+			slider.posX = slider.slides[slider.currentSlide].offsetLeft * -1;
+
+			slider.currentSlide -= 1;
+
+		} else {
+
+			debugger;
+
+		}
 
 	}
 
@@ -25,13 +36,23 @@ function left( blicky ) {
 
 	if ( slider.currentSlide == slider.slideCount - 1 ) {
 
-		slider.posX = slider.currentSlide * ( slider.width * -1 );
+		if ( isInfinite ) {
+
+			slider.currentSlide += 1;
+
+			slider.posX = slider.blicky.getElementsByClassName( 'blicky-slide' )[slider.slideCount + 1].offsetLeft * -1;
+
+		} else {
+
+			slider.posX = slider.slides[slider.currentSlide].offsetLeft * -1;
+
+		}
 
 	} else {
 
-		slider.posX = ( slider.currentSlide + 1 ) * ( slider.width * -1 );
-
 		slider.currentSlide += 1;
+
+		slider.posX = slider.slides[slider.currentSlide].offsetLeft * -1;
 
 	}
 
@@ -59,8 +80,6 @@ export function snap( blicky ) {
 
 	slider.oldcX = undefined;
 
-	transition( blicky );
-
 	if ( Math.abs( percentChange ) > 20 ) {
 
 		if ( dir == 'right' ) {
@@ -82,6 +101,8 @@ export function snap( blicky ) {
 		slider.posX = slider.slides[slider.currentSlide].offsetLeft * -1;
 
 	}
+
+	transition( blicky );
 
 	slide( blicky );
 
