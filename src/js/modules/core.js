@@ -80,7 +80,7 @@ export default class Core {
 
 		document.body.removeChild( blicky.wrapper );
 
-		blicky.wrapper = newSlider;
+		blicky.slider.wrapper = newSlider;
 
 	}
 
@@ -132,7 +132,7 @@ export default class Core {
 
 		let slides = Array
 
-			.from( this.blicky.wrapper.getElementsByClassName( 'blicky-slide' ) )
+			.from( this.blicky.slider.wrapper.getElementsByClassName( 'blicky-slide' ) )
 
 			.map( ( slide, index ) => {
 
@@ -146,10 +146,10 @@ export default class Core {
 
 		let newSliderProps = {
 
-			wrapper: this.blicky.wrapper,
-			height: this.blicky.wrapper.getElementsByClassName( 'blicky-slide' )[0].clientHeight,
-			container: this.blicky.wrapper.children[0],
-			blicky: this.blicky.wrapper.children[0].children[0],
+			wrapper: this.blicky.slider.wrapper,
+			height: this.blicky.slider.wrapper.getElementsByClassName( 'blicky-slide' )[0].clientHeight,
+			container: this.blicky.slider.wrapper.children[0],
+			blicky: this.blicky.slider.wrapper.children[0].children[0],
 			slides: slides,
 			currentSlide: 0,
 			directionalHistory: [],

@@ -43,25 +43,23 @@ export function transition( blicky ) {
 
 				}
 
-			} else if ( slider.currentSlide == slider.slideCount && dir == 'left' ) {
+			} else if ( dir == 'left' ) {
 
-				let realCurrentSlide = Array.from( $blicky
-
-					.getElementsByClassName( 'blicky-slide' ) )
-
-					.filter( slide => Math.abs( slider.posX ) == Math.abs( slide.offsetLeft ) )
-
-				;
-
-				if ( realCurrentSlide.length ) {
+				if ( slider.currentSlide == 0 && slider.currentDisplaySlide == slider.slideCount ) {
 
 					slider.snapping = false;
 
 					slider.wrapper.classList.remove( 'snapping' );
 
-					slider.currentSlide = 0;
+					var currentDisplaySlide = slider.currentDisplaySlide = slider.displaySlides
 
-					slider.posX = Math.abs( slider.slides[slider.currentSlide].offsetLeft ) * -1;
+						.filter( slide => window.parseInt( slide.dataset.blickyIndex, 10 ) == slider.currentSlide )[0]
+
+					;
+
+					slider.currentDisplaySlide = slider.displaySlides.indexOf( currentDisplaySlide );
+
+					slider.posX = currentDisplaySlide.offsetLeft * -1;
 
 					$blicky.style.left = `${slider.posX}px`;
 

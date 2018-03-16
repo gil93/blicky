@@ -40,9 +40,11 @@ export function reset( blicky ) {
 
 		slider.width = slider.wrapper.clientWidth;
 
-		slider.posX = ( slider.currentSlide * slider.width ) * -1;
+		slider.posX = ( ( slider.currentSlide + 1 ) * slider.width ) * -1;
 
-		drag( blicky, 0, true );
+		// drag( blicky, 0, true );
+
+		$blicky.style.left = `${slider.posX}px`;
 
 	});
 

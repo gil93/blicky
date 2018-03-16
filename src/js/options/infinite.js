@@ -10,7 +10,7 @@ const infiniteSlide = ( direction, index, slide ) => {
 
 }
 
-const addSlides = ( blicky ) => {
+const addSlides = blicky => {
 
 	let slider = blicky.slider;
 
@@ -34,9 +34,40 @@ const addSlides = ( blicky ) => {
 
 	;
 
+	slider.displaySlides = [
+
+		...Array.from( slider.blicky.getElementsByClassName( 'blicky-cloned' ) ),
+		...slides
+
+	].sort( ( a, b ) => {
+
+		let aIndex = window
+
+			.parseInt( a.dataset.blickyIndex, 10 )
+
+		;
+
+		let bIndex = window
+
+			.parseInt( b.dataset.blickyIndex, 10 )
+
+		;
+
+		return aIndex > bIndex;
+
+	});
+
 }
 
 export function infinite( blicky ) {
+
+	blicky.slider = {
+
+		...blicky.slider,
+		currentDisplaySlide: blicky.slider.currentSlide,
+		displaySlides: []
+
+	};
 
 	addSlides( blicky ); 
 
