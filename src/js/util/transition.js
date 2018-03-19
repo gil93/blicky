@@ -17,27 +17,21 @@ export function transition( blicky ) {
 
 	window.setTimeout( () => {
 
-		if ( isInfinite ) {
+		if ( isInfinite( blicky ) ) {
 
 			if ( slider.currentSlide == 0 && dir == 'right' ) {
 
-				let realCurrentSlide = Array.from( $blicky
-
-					.getElementsByClassName( 'blicky-slide' ) )
-
-					.filter( slide => slider.posX == slide.offsetLeft )
-
-				;
-
-				if ( realCurrentSlide.length ) {
+				if ( slider.currentSlide == 0 && slider.currentDisplaySlide == -1 ) {
 
 					slider.snapping = false;
 
 					slider.wrapper.classList.remove( 'snapping' );
 
-					slider.currentSlide = slider.slides.length - 1;
+					let currentDisplaySlide = slider.slides[slider.slideCount - 1];
 
-					slider.posX = Math.abs( slider.slides[slider.currentSlide].offsetLeft ) * -1;
+					slider.currentDisplaySlide = slider.displaySlides.indexOf( currentDisplaySlide );
+
+					slider.posX = currentDisplaySlide.offsetLeft * -1;
 
 					$blicky.style.left = `${slider.posX}px`;
 
@@ -51,7 +45,7 @@ export function transition( blicky ) {
 
 					slider.wrapper.classList.remove( 'snapping' );
 
-					var currentDisplaySlide = slider.currentDisplaySlide = slider.displaySlides
+					let currentDisplaySlide = slider.displaySlides
 
 						.filter( slide => window.parseInt( slide.dataset.blickyIndex, 10 ) == slider.currentSlide )[0]
 

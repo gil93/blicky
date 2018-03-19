@@ -6,13 +6,17 @@ import Events from './modules/events';
 
 export class Blicky {
 
-	constructor( element, options ) {
+	constructor( elem, options ) {
 
 		let self = this;
 
-		if ( ! element.length ) throw Error( 'Need to provide element' );
+		let element = elem;
 
-		this.wrapper = typeof element == 'object' ? element[0] : document.querySelectorAll( element )[0];
+		if ( typeof elem == 'string' ) element = document.querySelectorAll( elem );
+
+		if ( ! element.length || typeof element == 'string' ) throw new Error( 'Bad element' );
+
+		this.wrapper = element[0];
 
 		this.defaults = { infinite: false };
 

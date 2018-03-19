@@ -6,31 +6,47 @@ function right( blicky ) {
 
 	let slider = blicky.slider;
 
-	debugger;
-
 	if ( slider.currentSlide == 0 ) {
 
-		slider.posX = 0;
+		if ( isInfinite( blicky ) ) {
 
-		debugger;
+			debugger;
 
-	} else {
+			let currentDisplaySlide = slider.displaySlides
 
-		debugger;
+				.filter( slide => window.parseInt( slide.dataset.blickyIndex, 10 ) == slider.currentSlide - 1 )
 
-		if ( isInfinite ) {
+			;
+
+			slider.currentDisplaySlide = currentDisplaySlide
+
+				.map( slide => window.parseInt( slide.dataset.blickyIndex, 10 ) )[0]
+
+			;
+
+			slider.posX = currentDisplaySlide[0].offsetLeft * -1;
+
+		} else {
 
 			debugger;
 
 			slider.posX = slider.slides[slider.currentSlide].offsetLeft * -1;
 
-			slider.currentSlide -= 1;
+		}
+
+	} else {
+
+		if ( isInfinite( blicky ) ) {
+
+			debugger;
 
 		} else {
 
 			debugger;
 
 		}
+
+		slider.currentSlide -= 1;
 
 	}
 
@@ -44,65 +60,51 @@ function left( blicky ) {
 
 		slider.currentSlide += 1;
 
-		let currentDisplaySlide = slider.currentDisplaySlide = slider.displaySlides
+		if ( isInfinite( blicky ) ) {
 
-			.filter( slide => window.parseInt( slide.dataset.blickyIndex, 10 ) == slider.currentSlide )
+			let currentDisplaySlide = slider.displaySlides
 
-		;
+				.filter( slide => window.parseInt( slide.dataset.blickyIndex, 10 ) == slider.currentSlide )
 
-		slider.currentDisplaySlide = currentDisplaySlide
+			;
 
-			.map( slide => window.parseInt( slide.dataset.blickyIndex, 10 ) )[0]
+			slider.currentDisplaySlide = currentDisplaySlide
 
-		;
+				.map( slide => window.parseInt( slide.dataset.blickyIndex, 10 ) )[0]
 
-		slider.posX = currentDisplaySlide[0].offsetLeft * -1;
+			;
+
+			slider.posX = currentDisplaySlide[0].offsetLeft * -1;
+
+		} else {
+
+			slider.posX = slider.slides[slider.currentSlide].offsetLeft * -1;
+
+		}
 
 	} else {
 
-		let currentDisplaySlide = slider.currentDisplaySlide = slider.displaySlides
+		if ( isInfinite( blicky ) ) {
 
-			.filter( slide => window.parseInt( slide.dataset.blickyIndex, 10 ) == ( slider.currentSlide + 1 ) )
+			let currentDisplaySlide = slider.displaySlides
 
-		;
+				.filter( slide => window.parseInt( slide.dataset.blickyIndex, 10 ) == ( slider.currentSlide + 1 ) )
 
-		slider.currentDisplaySlide = slider.currentSlide + 1;
+			;
 
-		slider.currentSlide = 0;
+			slider.currentDisplaySlide = slider.currentSlide + 1;
 
-		slider.posX = currentDisplaySlide[0].offsetLeft * -1;
+			slider.currentSlide = 0;
+
+			slider.posX = currentDisplaySlide[0].offsetLeft * -1;
+
+		} else {
+
+			slider.posX = slider.slides[slider.currentSlide].offsetLeft * -1;
+
+		}
 
 	}
-
-	// if ( slider.currentSlide == slider.slideCount - 1 ) {
-
-	// 	debugger;
-
-	// 	if ( isInfinite ) {
-
-	// 		debugger;
-
-	// 		slider.currentSlide += 1;
-
-	// 		slider.posX = slider.blicky.getElementsByClassName( 'blicky-slide' )[slider.slideCount + 1].offsetLeft * -1;
-
-	// 	} else {
-
-	// 		debugger;
-
-	// 		slider.posX = slider.slides[slider.currentSlide].offsetLeft * -1;
-
-	// 	}
-
-	// } else {
-
-	// 	debugger;
-
-	// 	slider.currentSlide += 1;
-
-	// 	slider.posX = slider.slides[slider.currentSlide].offsetLeft * -1;
-
-	// }
 
 }
 
@@ -122,7 +124,7 @@ export function snap( blicky ) {
 
 	let slider = blicky.slider;
 
-	let currentSlide = isInfinite ? slider.currentDisplaySlide : currentSlide;
+	let currentSlide = slider.currentSlide;
 
 	let percentChange = ( ( Math.abs( slider.posX ) - slider.slides[currentSlide].offsetLeft ) / slider.width ) * 100;
 

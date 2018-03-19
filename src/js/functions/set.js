@@ -42,8 +42,6 @@ export function reset( blicky ) {
 
 		slider.posX = ( ( slider.currentSlide + 1 ) * slider.width ) * -1;
 
-		// drag( blicky, 0, true );
-
 		$blicky.style.left = `${slider.posX}px`;
 
 	});
